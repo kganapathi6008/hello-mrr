@@ -1,102 +1,85 @@
-var mysql = require('mysql');
-var dbconfig = require('./config.js');
-var moment = require('moment');
-const { client } = require('./server')
+var {dbConfig} = require('./config.js');
+const { Pool } = require('pg');
+const pool = new Pool(dbConfig);
 
 
-module.exports.insert = (req, res) => {
-    var first_name = req.body.first_name;
-    var last_name = req.body.last_name;
-    var email_id = req.body.email_id;
-    var phone_no = req.body.phone_no;
-    var gender = req.body.gender;
-    var date_of_birth = req.body.date_of_birth;
+module.exports.insert = async (req, res) => {
+    const {FirstName, LastName, Email, Phone, Address} = req.body;
 
-    let query = `insert into crud (first_name, last_name, email_id, phone_no, gender, date_of_birth) values ('${first_name}', '${last_name}', '${email_id}',${phone_no}, '${gender}', '${date_of_birth}')`;
-
+    let query = `insert into crud (FirstName, LastName, Email, Phone, Address) values ('${FirstName}', '${LastName}', '${Email}',${Phone}, '${Address}')`;
     console.log(query);
-    client.query(query, (error, result) => {
-        if (error) {
-            res.send({
-                "code": 204,
-                "data": result
-            })
-
-        } else {
-            res.send({
-                "code": 200,
-                "data": result
-            })
-        }
-        console.log(result.affectedRows + ' rows affected');
-    });
-    con.end();
+    try {
+        const result = await pool.query(query);
+        console.log(result.fields)
+        console.log(`Inserted ${result.rowCount} row`);
+        res.json({isSuccess: true, message: 'Inserted record successfully'});
+    } catch(e) {
+        console.log('error while inserting data', {e});
+        res.json(e);
+    }
 }
 
-module.exports.delete = (req, res) => {
-    var email_id = req.body.email_id;
+module.exports.delete = async (req, res) => {
+    var {employeeId} = req.query;
 
-    let query = `delete from crud where  email_id = '${email_id}'`;
+    let query = `delete from crud where id = '${employeeId}'`;
     console.log(query);
 
-    client.query(query, (error, result) => {
-        if (error) {
-            throw error;
-        } else {
-            res.send({
-                "code": 200,
-                "data": result
-            })
-        }
-        console.log(result.affectedRows + ' rows deleted');
-
-    });
-
-    con.end();
+    try {
+        const result = await pool.query(query);
+        console.log('delete', result)
+        console.log(`Deleted ${result.rowCount} row`);
+        res.json({isSuccess: true, message: `Deleted record with id:${employeeId} successfully`});
+    } catch(e) {
+        console.log('error while delete employee', {e});
+        res.json(e);
+    }
 
 }
 
-module.exports.select = (req, res) => {
+module.exports.select = async (req, res) => {
     let query = `select * from crud`;
     console.log(query);
 
-    client.query(query, (error, result) => {
-        if (error) {
-            throw result;
-        } else {
-            res.send({
-                "code": 200,
-                "data": result
-            })
-        }
-        console.log(result);
-    });
-    con.end();
+    try {
+        const result = await pool.query(query);
+        console.log('select', result)
+        res.json(result.rows);
+    } catch(e) {
+        console.log('error while fetching data', {e});
+        res.json(e);
+    }
 }
 
-module.exports.update = (req, res) => {
+module.exports.selectById = async (req, res) => {
+    const {employeeId} = req.query;
+    let query = `select * from crud where id=${employeeId}`;
+    console.log(query);
 
-    var first_name = req.body.first_name;
-    var last_name = req.body.last_name;
-    var email_id = req.body.email_id;
-    var phone_no = req.body.phone_no;
-    var gender = req.body.gender;
-    var date_of_birth = req.body.date_of_birth;
+    try {
+        const result = await pool.query(query);
+        console.log('selectById', result)
+        res.json(result.rows);
+    } catch(e) {
+        console.log(`error while fetching data by id ${employeeId}`, {e});
+        res.json(e);
+    }
+}
+
+module.exports.update = async (req, res) => {
+    const {Id, FirstName, LastName, Email, Phone, Address} = req.body;
 
     let query = `update crud 
-        set first_name = '${first_name}', last_name = '${last_name}', email_id = '${email_id}', phone_no = '${phone_no}', gender = '${gender}', date_of_birth = '${date_of_birth}'
-           where  email_id = '${email_id}'`;
+        set FirstName = '${FirstName}', LastName = '${LastName}', Email = '${Email}', Phone = '${Phone}', Address = '${Address}'
+           where  id = '${Id}'`;
     console.log(query);
-    client.query(query, (error, result) => {
-        if (error) {
-            throw error;
-        } else {
-            res.send({
-                "code": 200,
-                "data": result
-            })
-        }
-        console.log(result.affectedRows + ' rows updated');
-    });
-    con.end();
+    try {
+        const result = await pool.query(query);
+        console.log(result.fields)
+        console.log(`Update ${result.rowCount} row`);
+        res.json({isSuccess: true, message: `Updated record with id:${Id} successfully`});
+    } catch(e) {
+        console.log(`error while updating data by id ${Id}`, {e});
+        res.json(e);
+    }
 }
