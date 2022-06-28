@@ -1,10 +1,10 @@
 module.exports = {
     dbConfig: {
-        host: 'localhost',
+        host: '34.68.239.200',
         user: 'postgres',
-        password: 'Try2open@12',
+        password: 'postgres1234',
         database: 'crud',
-        port: 5400
+        port: 5432
     },
     appPort: 3000
 }

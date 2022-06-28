@@ -1,9 +1,13 @@
 var {dbConfig} = require('./config.js');
 const { Pool } = require('pg');
-const pool = new Pool(dbConfig);
+const {Router} = require('express');
+const router = Router();
+
+const connectionString = 'postgresql://postgres:postgres1234@34.68.239.200:5432/crud';
+const pool = new Pool({connectionString});
 
 
-module.exports.insert = async (req, res) => {
+router.post('/api/insert', async (req, res) => {
     const {FirstName, LastName, Email, Phone, Address} = req.body;
 
     let query = `insert into crud (FirstName, LastName, Email, Phone, Address) values ('${FirstName}', '${LastName}', '${Email}',${Phone}, '${Address}')`;
@@ -17,9 +21,9 @@ module.exports.insert = async (req, res) => {
         console.log('error while inserting data', {e});
         res.json(e);
     }
-}
+})
 
-module.exports.delete = async (req, res) => {
+router.post('/api/deleteEmployeeById', async (req, res) => {
     var {employeeId} = req.query;
 
     let query = `delete from crud where id = '${employeeId}'`;
@@ -35,9 +39,9 @@ module.exports.delete = async (req, res) => {
         res.json(e);
     }
 
-}
+})
 
-module.exports.select = async (req, res) => {
+router.get('/api/select', async (req, res) => {
     let query = `select * from crud`;
     console.log(query);
 
@@ -49,9 +53,26 @@ module.exports.select = async (req, res) => {
         console.log('error while fetching data', {e});
         res.json(e);
     }
-}
+})
 
-module.exports.selectById = async (req, res) => {
+
+router.get('/', async (req, res) => {
+    const healthcheck = {
+		uptime: process.uptime(),
+		message: 'OK',
+		timestamp: Date.now()
+	};
+	try {
+		res.send(healthcheck);
+	} catch (e) {
+		healthcheck.message = e;
+		res.status(503).send();
+	}
+
+    
+})
+
+router.get('/api/getEmployeeDetailById', async (req, res) => {
     const {employeeId} = req.query;
     let query = `select * from crud where id=${employeeId}`;
     console.log(query);
@@ -64,9 +85,9 @@ module.exports.selectById = async (req, res) => {
         console.log(`error while fetching data by id ${employeeId}`, {e});
         res.json(e);
     }
-}
+})
 
-module.exports.update = async (req, res) => {
+router.post('/api/updateEmployeeById', async (req, res) => {
     const {Id, FirstName, LastName, Email, Phone, Address} = req.body;
 
     let query = `update crud 
@@ -82,4 +103,6 @@ module.exports.update = async (req, res) => {
         console.log(`error while updating data by id ${Id}`, {e});
         res.json(e);
     }
-}
+})
+
+module.exports.appRoutes= router;

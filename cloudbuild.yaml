@@ -1,0 +1,55 @@
+---
+steps:
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: build
+    waitFor: ['-']
+    args: 
+      - build 
+      - -t
+      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
+      - .
+
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: push
+    waitFor: ['build']
+    args:
+      - push
+      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: updatelatesttag
+    waitFor: ['push']
+    args:
+      - artifacts
+      - docker
+      - tags
+      - add
+      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA 
+      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$_ARTIFACT_TAG_NAME
+
+  - name: 'gcr.io/cloud-builders/kubectl'
+    id: deploy
+    waitFor: ['updatelatesttag']
+    args:
+      - set
+      - image
+      - deployment
+      - $_SERVICE_NAME
+      - $_CONTAINER_NAME=us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
+    env:
+      - 'CLOUDSDK_COMPUTE_REGION=${_REGION}'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
+
+
+substitutions:
+    _ARTIFACT_FOLDER_NAME: dev
+    _IMAGE_NAME: nodejs-be
+    _ARTIFACT_TAG_NAME: latest
+    _REGION: us-central1-c
+    _CLUSTER_NAME: dev-cluster
+    _SERVICE_NAME: nodejs-be
+    _CONTAINER_NAME: nodejs-be-sha256-1
+
+timeout: 1200s
