@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const {Router} = require('express');
 const router = Router();
 
-const connectionString = 'postgresql://postgres:postgres1234@34.68.239.200:5432/crud';
+const connectionString = 'postgresql://postgres:postgres1234@34.122.177.223:5432/crud';
 const pool = new Pool({connectionString});
 
 

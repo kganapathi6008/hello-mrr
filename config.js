@@ -1,6 +1,6 @@
 module.exports = {
     dbConfig: {
-        host: '34.68.239.200',
+        host: '34.122.177.223',
         user: 'postgres',
         password: 'postgres1234',
         database: 'crud',
