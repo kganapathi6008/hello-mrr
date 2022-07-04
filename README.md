@@ -1,4 +1,4 @@
-# crud_backend app
+# crud_backend
 Node.js application performs crud operations on 
 
 ## prerequisite
