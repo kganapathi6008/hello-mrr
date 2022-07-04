@@ -50,6 +50,6 @@ substitutions:
     _REGION: us-central1-c
     _CLUSTER_NAME: dev-cluster
     _SERVICE_NAME: nodejs-be
-    _CONTAINER_NAME: nodejs-be-sha256-1
+    _CONTAINER_NAME: nodejs-be
 
 timeout: 1200s
