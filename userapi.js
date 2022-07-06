@@ -43,6 +43,7 @@ router.post('/api/deleteEmployeeById', async (req, res) => {
 })
 
 router.get('/api/select', async (req, res) => {
+    console.log('database url$$$$$$', connectionString)
     let query = `select * from crud`;
     console.log(query);
 
