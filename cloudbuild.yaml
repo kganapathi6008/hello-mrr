@@ -28,10 +28,22 @@ steps:
       - add
       - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA 
       - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$_ARTIFACT_TAG_NAME
+  
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Authorize Cloud Build'
+    waitFor: ['updatelatesttag']
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        apt-get install dnsutils -y &&
+        cloudbuild_external_ip=$(dig @resolver4.opendns.com myip.opendns.com +short) &&
+        gcloud container clusters update my-private-cluster --zone=$_ZONE --enable-master-authorized-networks --master-authorized-networks $cloudbuild_external_ip/32 &&
+        echo $cloudbuild_external_ip  
 
   - name: 'gcr.io/cloud-builders/kubectl'
     id: deploy
-    waitFor: ['updatelatesttag']
+    waitFor: ['Authorize Cloud Build']
     args:
       - set
       - image
@@ -42,6 +54,17 @@ steps:
       - 'CLOUDSDK_COMPUTE_REGION=${_REGION}'
       - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
 
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'Disable Authorized Networks'
+    waitFor: ['deploy']
+    entrypoint: 'gcloud'
+    args:
+      - 'container'
+      - 'clusters'
+      - 'update'
+      - 'my-private-cluster'
+      - '--zone=$_ZONE'
+      - '--no-enable-master-authorized-networks'
 
 substitutions:
     _ARTIFACT_FOLDER_NAME: dev
