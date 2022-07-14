@@ -37,6 +37,7 @@ steps:
       - -c
       - |
         apt-get install dnsutils -y &&
+        existind_authorized_ip=$()
         cloudbuild_external_ip=$(dig @resolver4.opendns.com myip.opendns.com +short) &&
         gcloud container clusters update $_CLUSTER_NAME --region=$_REGION --enable-master-authorized-networks --master-authorized-networks $cloudbuild_external_ip/32 &&
         echo $cloudbuild_external_ip  
@@ -62,9 +63,10 @@ steps:
       - 'container'
       - 'clusters'
       - 'update'
-      - '_CLUSTER_NAME'
+      - '$_CLUSTER_NAME'
       - '--region=$_REGION'
       - '--no-enable-master-authorized-networks'
+
 
 
 substitutions:
