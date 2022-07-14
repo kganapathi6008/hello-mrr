@@ -65,8 +65,6 @@ steps:
       - '_CLUSTER_NAME'
       - '--region=$_REGION'
       - '--no-enable-master-authorized-networks'
-      - '--master-authorized-networks' 
-      - '$cloudbuild_external_ip/32'
 
 
 substitutions:
