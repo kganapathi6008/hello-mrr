@@ -7,7 +7,7 @@ steps:
     args: 
       - build 
       - -t
-      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
+      - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
       - .
 
 
@@ -16,7 +16,7 @@ steps:
     waitFor: ['build']
     args:
       - push
-      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
+      - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
 
   - name: 'gcr.io/cloud-builders/gcloud'
     id: updatelatesttag
@@ -26,8 +26,8 @@ steps:
       - docker
       - tags
       - add
-      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA 
-      - us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$_ARTIFACT_TAG_NAME
+      - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA 
+      - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$_ARTIFACT_TAG_NAME
   
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     id: 'Authorize Cloud Build'
@@ -49,7 +49,7 @@ steps:
       - image
       - deployment
       - $_SERVICE_NAME
-      - $_CONTAINER_NAME=us-central1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
+      - $_CONTAINER_NAME=us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
     env:
       - 'CLOUDSDK_COMPUTE_REGION=${_REGION}'
       - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
