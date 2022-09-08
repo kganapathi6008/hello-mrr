@@ -11,23 +11,23 @@ steps:
       - .
 
 
-  - name: 'gcr.io/cloud-builders/docker'
-    id: push
-    waitFor: ['build']
-    args:
-      - push
-      - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
+  # - name: 'gcr.io/cloud-builders/docker'
+    # id: push
+    # waitFor: ['build']
+    # args:
+      # - push
+      # - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: updatelatesttag
-    waitFor: ['push']
-    args:
-      - artifacts
-      - docker
-      - tags
-      - add
-      - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA 
-      - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$_ARTIFACT_TAG_NAME
+  # - name: 'gcr.io/cloud-builders/gcloud'
+    # id: updatelatesttag
+    # waitFor: ['push']
+    # args:
+      # - artifacts
+      # - docker
+      # - tags
+      # - add
+      # - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA 
+      # - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$_ARTIFACT_TAG_NAME
   
   # - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     # id: 'Authorize Cloud Build'
