@@ -73,6 +73,7 @@ substitutions:
     _IMAGE_NAME: nodejs-be
     _ARTIFACT_TAG_NAME: latest
     _REGION: us-east1-b
+    _BRANCH_NAME: develop
     _CLUSTER_NAME: dev-cluster
     _SERVICE_NAME: nodejs-be
     _CONTAINER_NAME: nodejs-be
