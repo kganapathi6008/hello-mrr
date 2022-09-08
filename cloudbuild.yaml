@@ -69,11 +69,11 @@ steps:
  
 
 substitutions:
-    _ARTIFACT_FOLDER_NAME: prod
+    _ARTIFACT_FOLDER_NAME: staging
     _IMAGE_NAME: nodejs-be
     _ARTIFACT_TAG_NAME: latest
     _REGION: us-east1-b
-    _CLUSTER_NAME: prod-cluster
+    _CLUSTER_NAME: staging-cluster
     _SERVICE_NAME: nodejs-be
     _CONTAINER_NAME: nodejs-be
 
