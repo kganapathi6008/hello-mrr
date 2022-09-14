@@ -68,14 +68,14 @@ steps:
  
  
  
-# substitutions:
-    # _ARTIFACT_FOLDER_NAME: prod
-    # _IMAGE_NAME: nodejs-be
-    # _ARTIFACT_TAG_NAME: latest
-    # _REGION: us-east1-b
-    # _BRANCH_NAME: main
-    # _CLUSTER_NAME: prod-cluster
-    # _SERVICE_NAME: nodejs-be
-    # _CONTAINER_NAME: nodejs-be
+substitutions:
+    _ARTIFACT_FOLDER_NAME: prod
+    _IMAGE_NAME: nodejs-be
+    _ARTIFACT_TAG_NAME: latest
+    _REGION: us-east1-b
+    _BRANCH_NAME: main
+    _CLUSTER_NAME: prod-cluster
+    _SERVICE_NAME: nodejs-be
+    _CONTAINER_NAME: nodejs-be
 
 # timeout: 1200s
