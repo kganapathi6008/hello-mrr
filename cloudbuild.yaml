@@ -76,4 +76,4 @@ substitutions:
     _SERVICE_NAME: nodejs-be
     _CONTAINER_NAME: nodejs-be
 
-timeout: 12s
+timeout: 1200s
