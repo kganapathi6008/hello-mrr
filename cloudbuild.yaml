@@ -17,6 +17,7 @@ steps:
       - push
       - us-east1-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_FOLDER_NAME/$_IMAGE_NAME:$SHORT_SHA
 
+
   # - name: 'gcr.io/cloud-builders/gcloud'
     # id: updatelatesttag
     # waitFor: ['push']
