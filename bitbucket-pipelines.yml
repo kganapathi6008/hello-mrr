@@ -7,5 +7,5 @@ pipelines:
           enabled: false
         script:
           - git clone --bare git@bitbucket.org:kganapathi/crud_backend.git
-          - cd RepoName.git
+          - cd crud_backend
           - git push --mirror source.developers.google.com:2022/p/profound-coda-368811/r/my-repository-hello-mrr
