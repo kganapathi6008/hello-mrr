@@ -8,4 +8,6 @@ pipelines:
         script:
           - git clone --bare git@bitbucket.org:kganapathi/crud_backend.git
           - cd crud_backend.git
-          - git push --mirror git@github.com:kganapathi6008/hello-mrr.git
+          - git remote add google https://source.developers.google.com/p/profound-coda-368811/r/my-repository-hello-mrr
+          - git push 
+          - git push --mirror --all google
