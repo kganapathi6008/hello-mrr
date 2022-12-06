@@ -9,3 +9,4 @@ pipelines:
           - git clone --bare git@bitbucket.org:kganapathi/crud_backend.git
           - cd crud_backend.git
           - git push --mirror vijaykakarla348@gmail.com@source.developers.google.com:2022/p/profound-coda-368811/r/my-repository-hello-mrr
+          
